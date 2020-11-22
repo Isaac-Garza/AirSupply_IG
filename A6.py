@@ -4,33 +4,14 @@ from prettytable import from_db_cursor
 
 def createFunc(cursor):
     print("You've Selected CREATE")
-    Helloworld
     
     
 def readFunc(cursor):
     print("\nYou've Selected READ")
     print("What Tables would you like to Select?")
 
-    count = 1
-    table = {}
-    for (table_name,) in cursor:
-            print(str(count) + ": " + table_name.upper())
-            table[count] = table_name.upper()
-            count+=1
+    selection = selectTable(cursor)
 
-    inputError = True
-    while(inputError):
-        userInput = raw_input("Input: ")
-        
-        try:
-            userInput = int(userInput[0])
-            selection = table[userInput]
-            print(selection)
-            inputError = False
-        except:
-            print("Error! Invalid Input")
-
-    
     cursor.execute("SELECT * FROM " + selection)
 
     mytable = from_db_cursor(mycursor)
@@ -72,7 +53,29 @@ def callSelection():
         else:
             print("\nError! Please Try again!")
 
+def selectTable(cursor):
+    cursor.execute("SHOW TABLES")
+    
+    count = 1
+    table = {}
+    for (table_name,) in cursor:
+            print(str(count) + ": " + table_name.upper())
+            table[count] = table_name.upper()
+            count+=1
 
+    inputError = True
+    while(inputError):
+        userInput = raw_input("Input: ")
+        
+        try:
+            userInput = int(userInput[0])
+            selection = table[userInput]
+            print(selection)
+            inputError = False
+        except:
+            print("Error! Invalid Input")
+    
+    return selection
 
 
 
@@ -92,7 +95,7 @@ mytable = from_db_cursor(mycursor)
 print("==============================AirSupply Order==============================")
 print(mytable)
 
-choice = ''
+choice = 'Y'
 while choice == 'Y':
     callSelection()
     choice = raw_input("Want to make another selection? (Y/N)")
