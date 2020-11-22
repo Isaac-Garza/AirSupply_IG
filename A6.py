@@ -3,7 +3,31 @@ from prettytable import PrettyTable
 from prettytable import from_db_cursor
 
 def createFunc(cursor):
-    print("You've Selected CREATE")
+    print("\nYou've Selected CREATE")
+    print("Which Table would you like to INSERT into?")
+
+    selection = selectTable(cursor)
+
+    # insertValue = raw_input("(VENDOR_ID, VENDOR_NAME, ACCOUNT_PAYABLE_BY_TERM)\n")
+    value = "1009, \'Iron-Plating\', 30, 1"
+    sql = "INSERT INTO " + selection + " VALUES (" + value + ")"
+
+    print(sql)
+    
+    cursor.execute(sql)
+
+    myDatabase.commit()
+    print(mycursor.rowcount, "record inserted.")
+
+    # if selection == 'SALES_REP_IG':
+        
+    # elif selection == 'ORDER_IG':
+
+    # elif selection == 'ORDER_LINES_IG':
+
+    # elif selection == 'PRODUCT_IG':
+
+    # else:
     
     
 def readFunc(cursor):
@@ -17,7 +41,6 @@ def readFunc(cursor):
     mytable = from_db_cursor(mycursor)
     print("================" + selection + "================")
     print(mytable)
-
 
 
 def updateFunc(cursor):
