@@ -45,6 +45,23 @@ def readFunc(cursor):
 
 def updateFunc(cursor):
     print("You've Selected UPDATE")
+    print("Which table would you like to UPDATE?")
+
+    selection = selectTable(cursor)
+
+    print("Which Record would you like UPDATE? (Select by Vendor_ID)")
+    cursor.execute("SELECT * FROM " + selection)
+
+    mytable = from_db_cursor(mycursor)
+    print(mytable)
+
+    vendorID = raw_input("Record: ") 
+    newVendorName = "Iron Plating"
+    newAPT = "15"
+    mysql = "UPDATE " + selection + " SET VENDOR_NAME = '" + newVendorName + "', ACCOUNTS_PAYABLE_TERMS = " + newAPT +" WHERE VENDOR_ID = " + vendorID + ";"
+    
+    cursor.execute(mysql)
+    print(mycursor.rowcount, "record updated.")
 
 def deleteFunc(cursor):
     print("You've Selected DELETE")
