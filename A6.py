@@ -61,10 +61,29 @@ def updateFunc(cursor):
     mysql = "UPDATE " + selection + " SET VENDOR_NAME = '" + newVendorName + "', ACCOUNTS_PAYABLE_TERMS = " + newAPT +" WHERE VENDOR_ID = " + vendorID + ";"
     
     cursor.execute(mysql)
+    myDatabase.commit()
     print(mycursor.rowcount, "record updated.")
 
 def deleteFunc(cursor):
     print("You've Selected DELETE")
+    print("Which Table would you like to DELETE from?")
+    selection = selectTable(cursor)
+
+    print("Which Record would you like DELETE? (Select by Vendor_ID)")
+    cursor.execute("SELECT * FROM " + selection)
+
+    mytable = from_db_cursor(mycursor)
+    print(mytable)
+
+    vendorID = raw_input("Record: ") 
+
+    mysql = "DELETE FROM " + selection + " WHERE VENDOR_ID = " + vendorID + ";"
+
+    cursor.execute(mysql)
+    myDatabase.commit()
+
+    print(mycursor.rowcount, "record updated.")
+
 
 def callSelection():
     inputError = True
@@ -120,26 +139,32 @@ def selectTable(cursor):
 
 
 
+
+
 myDatabase = mysql.connector.connect(
     host="localhost",
     database="airsupplydata2020",
     user="root",
     password="A8AfIcIsI!")
 
+print("Welcome to the AirSupply Database! Please login:")
+username = str(raw_input("Username: "))
+password = str(raw_input("Password: "))
+
 mycursor = myDatabase.cursor()
+sql = "SELECT * FROM login_ig WHERE username = '" + username + "'"
+mycursor.execute(sql)
 
-mycursor.execute("SELECT * FROM ORDER_IG")
+result = mycursor.fetchall()
 
-mytable = from_db_cursor(mycursor)
-
-print("==============================AirSupply Order==============================")
-print(mytable)
-
-choice = 'Y'
-while choice == 'Y':
-    callSelection()
-    choice = raw_input("Want to make another selection? (Y/N)")
-    choice = choice[0].upper()
+if (username == str(result[0][0]) and password == str(result[0][1])):
+    choice = 'Y'
+    while choice == 'Y':
+        callSelection()
+        choice = raw_input("Want to make another selection? (Y/N)\nChoice: ")
+        choice = choice[0].upper()
+else:
+    print("ERROR!!!")
 
 
 
