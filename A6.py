@@ -154,19 +154,19 @@ password = str(raw_input("Password: "))
 mycursor = myDatabase.cursor()
 sql = "SELECT * FROM login_ig WHERE username = '" + username + "'"
 mycursor.execute(sql)
-
 result = mycursor.fetchall()
 
-if (username == str(result[0][0]) and password == str(result[0][1])):
-    choice = 'Y'
-    while choice == 'Y':
-        callSelection()
-        choice = raw_input("Want to make another selection? (Y/N)\nChoice: ")
-        choice = choice[0].upper()
-else:
-    print("ERROR!!!")
+while not ((username == str(result[0][0]) and password == str(result[0][1]))):
+    print("\nIncorrect Username or Password")
+    username = str(raw_input("Username: "))
+    password = str(raw_input("Password: "))
 
+print("\nLogged In!")
 
-
+choice = 'Y'
+while choice == 'Y':
+    callSelection()
+    choice = raw_input("Want to make another selection? (Y/N)\nChoice: ")
+    choice = choice[0].upper()
 
 
